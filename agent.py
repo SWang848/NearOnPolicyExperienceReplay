@@ -393,7 +393,7 @@ class DeepAgent():
                                                k=self.k, 
                                                steps=self.steps, 
                                                current_weights=self.weights, 
-                                               current_states=self.current_state, 
+                                               current_state=self.current_state, 
                                                properties=self.current_state_raw, 
                                                property=self.property,
                                                mode='cosine')

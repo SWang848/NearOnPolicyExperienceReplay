@@ -132,7 +132,8 @@ parser.add_option(
 #     np.round(options.discount, 4), options.updates,
 #     np.round(options.lr, 4),
 #     np.round(options.scale, 2), np.round(options.steps, 2), np.round(options.mem_a, 2), np.round(options.mem_e, 2))
-extra = "AP_2-regular"
+# extra = "".format(options.ner,)
+extra = "AP_1-regular"
 
 random.seed(options.seed)
 np.random.seed(options.seed)
@@ -146,10 +147,6 @@ obj_cnt = minecart.obj_cnt()
 #     count=options.steps, n=minecart.obj_cnt(), m=1 if options.mode == "sparse" else 10)
 # np.savetxt(r'.\regular_weights', np.array(all_weights))
 all_weights = list(np.loadtxt("regular_weights_mc"))
-
-# b= [i.tolist() for i in minecart.pareto_coverage_set()]
-# print(np.array(b).T)
-# print(minecart.convex_coverage_set())
 
 agent = DeepAgent(
     Minecart.action_space(),
