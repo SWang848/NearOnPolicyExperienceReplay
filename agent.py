@@ -90,7 +90,7 @@ class DeepAgent():
                  grayscale=BLACK_AND_WHITE,
                  frames_per_state=10,
                  max_episode_length=1000,
-                 memory_net=True,
+                 memory_net=False,
                  ner=True,
                  property=False):
         """Agent implementing both Multi-Network, Multi-Head and Single-head 
