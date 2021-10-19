@@ -630,7 +630,7 @@ class NearOnPolicyMemoryBuffer(PrioritizedDiverseMemory):
         # super(AttentiveMemoryBuffer, self).__init__(main_capacity, sec_capacity, trace_diversity, crowding_diversity, value_function, e, a)
         PrioritizedDiverseMemory.__init__(self, main_capacity, sec_capacity, trace_diversity, crowding_diversity, value_function, e, a)
 
-    def cosine_distance(a, b):
+    def cosine_distance(self, a, b):
         if a.all()==0:
             a[0] += 0.001
         if b.all()==0:
@@ -713,7 +713,7 @@ class NearOnPolicyMemoryBuffer(PrioritizedDiverseMemory):
                 if property:
                     properties_1 = data[1][5][4]
                     properties_2 = properties
-                    sim_score = self.cal_properties_similarities(np.copy(properties_1), np.copy(properties_2), mode) \
+                    sim_score = self.cal_properties_similarity(np.copy(properties_1), np.copy(properties_2), mode) \
                             + self.cal_weights_similarity(current_weights, data[1][5][3], mode)
                 else:
                     state = np.concatenate((np.expand_dims(data[1][0], axis=0),
