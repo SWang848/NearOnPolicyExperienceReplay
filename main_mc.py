@@ -133,7 +133,7 @@ parser.add_option(
 #     np.round(options.lr, 4),
 #     np.round(options.scale, 2), np.round(options.steps, 2), np.round(options.mem_a, 2), np.round(options.mem_e, 2))
 # extra = "".format(options.ner,)
-extra = "AP_1-regular"
+extra = "AP_2-regular"
 
 random.seed(options.seed)
 np.random.seed(options.seed)
