@@ -33,11 +33,11 @@ AGENT_DICT = {
     'CN': CNAgent,
 }
 
-mkdir_p('DCRAC/output')
-mkdir_p('DCRAC/output/logs')
-mkdir_p('DCRAC/output/networks')
-mkdir_p('DCRAC/output/pred')
-mkdir_p('DCRAC/output/imgs')
+mkdir_p('output')
+mkdir_p('output/logs')
+mkdir_p('output/networks')
+mkdir_p('output/pred')
+mkdir_p('output/imgs')
 
 parser = OptionParser()
 parser.add_option('-a', '--agent', dest='agent', choices=['DCRAC', 'DCRACS', 'DCRAC0', 'CNLSTM', 'CN'], default='DCRACS')
@@ -74,11 +74,11 @@ hyper_info = '{}-r{}{}-d{}-t{}-batsiz{}-lr{}-{}-eval{}'.format(
     options.batch_size, str(options.lr_c), options.mode, options.obj_func)
 
 # create evironment
-json_file = "DCRAC/mine_config.json"
+json_file = "mine_config.json"
 env = Minecart.from_json(json_file)
 pixel_env = PixelMinecart(env)
 
-all_weights = list(np.loadtxt("DCRAC/regular_weights_mc"))
+all_weights = list(np.loadtxt("regular_weights_mc"))
 timestamp = time.strftime('%m%d_%H%M', time.localtime())
 # log_file = open('DCRAC/output/logs/mc_rewards_{}.log'.format(hyper_info), 'w', 1)
 
@@ -111,7 +111,7 @@ agent = deep_agent(env,
 
 steps_per_weight = 50000 if options.mode == 'sparse' else 1
 
-log_file_name = 'DCRAC/output/logs/{}_mc_rewards_{}.log'.format(timestamp, hyper_info)
+log_file_name = 'output/logs/{}_mc_rewards_{}.log'.format(timestamp, hyper_info)
 with open(log_file_name, 'w', 1) as log_file:
     agent.train(log_file, options.steps, all_weights, steps_per_weight, options.steps*10, log_game_step=options.log_game)
 

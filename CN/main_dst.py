@@ -111,7 +111,7 @@ parser.add_option("-n", "--ner", dest='ner', default=True)
 dst = DeepSeaTreasure(view=(5,5), full=True, scale=1)
 obj_cnt = 2
 
-all_weights = list(np.loadtxt("CN/regular_weights_dst"))
+all_weights = list(np.loadtxt("regular_weights_dst"))
 # all_weights = [np.array([0.41111111, 1-0.41111111])]
 # all_weights = all_weights + [np.array([0.09832561, 1-0.09832561]) for i in range(steps)]
 # print(all_weights[0])
@@ -150,5 +150,5 @@ agent = DeepAgent(
     ner=options.ner)
 
 steps_per_weight = 5000 if options.mode == "sparse" else 1
-log_file = open('CN/output/logs/rewards_{}'.format(extra), 'w', 1)
+log_file = open('output/logs/rewards_{}'.format(extra), 'w', 1)
 agent.train(dst, log_file, options.steps, all_weights, steps_per_weight, options.steps*10)

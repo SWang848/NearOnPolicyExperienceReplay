@@ -31,11 +31,11 @@ class PixelMinecart(gym.ObservationWrapper):
         return obs
 
 
-mkdir_p("CN/output")
-mkdir_p("CN/output/logs")
-mkdir_p("CN/output/networks")
-mkdir_p("CN/output/pred")
-mkdir_p("CN/output/img")
+mkdir_p("output")
+mkdir_p("output/logs")
+mkdir_p("output/networks")
+mkdir_p("output/pred")
+mkdir_p("output/img")
 parser = OptionParser()
 parser.add_option(
     "-l",
@@ -138,7 +138,7 @@ extra = "AP_2-regular"
 random.seed(options.seed)
 np.random.seed(options.seed)
 
-json_file = "CN/mine_config_det.json"
+json_file = "mine_config_det.json"
 minecart = Minecart.from_json(json_file)
 pixel_minecart = PixelMinecart(minecart)
 obj_cnt = minecart.obj_cnt()
@@ -146,7 +146,7 @@ obj_cnt = minecart.obj_cnt()
 # all_weights = generate_weights(
 #     count=options.steps, n=minecart.obj_cnt(), m=1 if options.mode == "sparse" else 10)
 # np.savetxt(r'.\regular_weights', np.array(all_weights))
-all_weights = list(np.loadtxt("CN/regular_weights_mc"))
+all_weights = list(np.loadtxt("regular_weights_mc"))
 
 agent = DeepAgent(
     Minecart.action_space(),
@@ -173,6 +173,6 @@ agent = DeepAgent(
     property=options.property)
 
 steps_per_weight = 50000 if options.mode == "sparse" else 1
-log_file = open('CN/output/logs/rewards_{}'.format(extra), 'w', 1)
+log_file = open('output/logs/rewards_{}'.format(extra), 'w', 1)
 agent.train(minecart, log_file,
             options.steps, all_weights, steps_per_weight, options.steps*10, pixel_env=pixel_minecart)
