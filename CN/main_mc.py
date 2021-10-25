@@ -31,11 +31,11 @@ class PixelMinecart(gym.ObservationWrapper):
         return obs
 
 
-mkdir_p("output")
-mkdir_p("output/logs")
-mkdir_p("output/networks")
-mkdir_p("output/pred")
-mkdir_p("output/img")
+mkdir_p("CN/output")
+mkdir_p("CN/output/logs")
+mkdir_p("CN/output/networks")
+mkdir_p("CN/output/pred")
+mkdir_p("CN/output/img")
 parser = OptionParser()
 parser.add_option(
     "-l",
@@ -173,6 +173,6 @@ agent = DeepAgent(
     property=options.property)
 
 steps_per_weight = 50000 if options.mode == "sparse" else 1
-log_file = open('output/logs/rewards_{}'.format(extra), 'w', 1)
+log_file = open('CN/output/logs/rewards_{}'.format(extra), 'w', 1)
 agent.train(minecart, log_file,
             options.steps, all_weights, steps_per_weight, options.steps*10, pixel_env=pixel_minecart)
