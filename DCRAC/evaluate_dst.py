@@ -43,18 +43,18 @@ def episodes_evaluate(file_path):
             line = line.rstrip('\n')
             log = line.split(';')
             if log[0] == 'episode':
-                steps_list.append(log[1])
+                steps_list.append(log[2])
 
-                weight = parse_array(log[-2])
+                weight = parse_array(log[-1])
                 weight_list.append(weight)
 
-                error = log[-4]
+                error = log[-2]
                 error_list.append(error)
 
-                act_scal_reward = eval(log[5])
+                act_scal_reward = eval(log[6])
                 act_scal_rewards_list.append(act_scal_reward)
 
-                act_reward = parse_array(log[6])
+                act_reward = parse_array(log[7])
                 act_reward_list.append(act_reward)
 
                 opt_scal_reward = max(np.dot(OPT_R, weight))
@@ -247,10 +247,14 @@ def _draw_avg_episodes(data, column):
 
 def draw_several_episodes(file_path, P_number_list, AP_number_list):
 
+    """
+    draw several results' regrets 
+    """
+
     all_regret_list = []
     all_steps_list = []
     for i in P_number_list:
-        data = pd.read_csv(file_path+'rewards_P_{}-regular.csv'.format(i))
+        data = pd.read_csv(file_path+'rewards_P_{}-dst.csv'.format(i))
         new_steps_list, regret_list = _draw_avg_episodes(data, 'regret')
         # print(len(new_steps_list))
         all_regret_list.append(regret_list)
@@ -270,7 +274,7 @@ def draw_several_episodes(file_path, P_number_list, AP_number_list):
     all_regret_list = []
     all_steps_list = []
     for i in AP_number_list:
-        data = pd.read_csv(file_path+'rewards_AP_{}-regular.csv'.format(i))
+        data = pd.read_csv(file_path+'rewards_AP_{}-dst.csv'.format(i))
         new_steps_list, regret_list = _draw_avg_episodes(data, 'regret')
         all_regret_list.append(regret_list)
         all_steps_list.append(new_steps_list)
@@ -288,7 +292,6 @@ def draw_several_episodes(file_path, P_number_list, AP_number_list):
     plt.plot(list(np.round(all_steps_matrix.sum(axis=0)/all_steps_matrix.shape[0])), 
                 list(all_regret_matrix.sum(axis=0)/all_regret_matrix.shape[0]), color='blue', linestyle='-.', label='average AP')
     
-    
     # plt.title('Total Regret')
     plt.xlabel('Steps', fontsize=15)
     plt.ylabel('Total Regret', fontsize=15)
@@ -303,9 +306,13 @@ def draw_several_episodes(file_path, P_number_list, AP_number_list):
 
 def draw_range_chart(file_path, P_number_list, AP_number_list):
 
+    """
+    draw several results' regrets 
+    """
+
     all_regret_list = []
     for i in P_number_list:
-        data = pd.read_csv(file_path+'rewards_P_{}-regular.csv'.format(i))
+        data = pd.read_csv(file_path+'rewards_P_{}-dst.csv'.format(i))
         steps_list, regret_list = _draw_avg_episodes(data, 'regret')
         all_regret_list.append(regret_list)
 
@@ -321,7 +328,7 @@ def draw_range_chart(file_path, P_number_list, AP_number_list):
 
     all_regret_list = []
     for i in AP_number_list:
-        data = pd.read_csv(file_path+'rewards_AP_{}-regular.csv'.format(i))
+        data = pd.read_csv(file_path+'rewards_AP_{}-dst.csv'.format(i))
         steps_list, regret_list = _draw_avg_episodes(data, 'regret')
         all_regret_list.append(regret_list)
 
@@ -409,7 +416,7 @@ def cal_adhesion_3(file_path):
 def draw_range_error(file_path, P_number_list, AP_number_list):
     all_error_list = []
     for i in P_number_list:
-        data = pd.read_csv(file_path+'rewards_P_{}-regular.csv'.format(i))
+        data = pd.read_csv(file_path+'rewards_P_{}-dst.csv'.format(i))
         steps_list, error_list = _draw_avg_episodes(data, 'error')
         all_error_list.append(error_list)
 
@@ -425,7 +432,7 @@ def draw_range_error(file_path, P_number_list, AP_number_list):
 
     all_regret_list = []
     for i in AP_number_list:
-        data = pd.read_csv(file_path+'rewards_AP_{}-regular.csv'.format(i))
+        data = pd.read_csv(file_path+'rewards_AP_{}-dst.csv'.format(i))
         steps_list, error_list = _draw_avg_episodes(data, 'error')
         all_regret_list.append(error_list)
 
@@ -442,11 +449,12 @@ def draw_range_error(file_path, P_number_list, AP_number_list):
     plt.show()
             
 
-# logs_file_path = os.path.join(os.getcwd(), 'output/logs/rewards_AP_1-regular')
+logs_file_path = os.path.join(os.getcwd(), 'output/logs/rewards_P_1-dst')
 # data = pd.read_csv(logs_file_path+'.csv')
 # a, b = _draw_avg_episodes(data)
 # plt.plot(a, b)
 # plt.show()
+# episodes_evaluate(logs_file_path)
 
 # transitions_file_path = os.path.join(os.getcwd(), 'output/logs/rewards_AP_17-regular-transitions_logs')
 # episodes_evaluate(logs_file_path)
@@ -454,9 +462,9 @@ def draw_range_error(file_path, P_number_list, AP_number_list):
 # cal_adhesion_2(transitions_file_path, [1004, 10036], 1)
 
 logs_file_path = os.path.join(os.getcwd(), 'output/logs/')
-# draw_several_episodes(logs_file_path, [i for i in range(1, 20)], [i for i in range(2, 20)])
-# draw_range_chart(logs_file_path, [i for i in range(1, 20)], [i for i in range(2, 20)])
-draw_range_error(logs_file_path, [i for i in range(1, 20)], [i for i in range(2, 20)])
+draw_several_episodes(logs_file_path, [i for i in range(1, 5)], [i for i in range(1, 5)])
+# draw_range_chart(logs_file_path, [i for i in range(1, 5)], [i for i in range(1, 5)])
+draw_range_error(logs_file_path, [i for i in range(1, 5)], [i for i in range(1, 5)])
 # draw_several_episodes(logs_file_path, [12], "AP")
 
 # avg_regret(os.path.join(os.getcwd(), 'output/logs/'))
