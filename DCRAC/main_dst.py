@@ -52,7 +52,7 @@ parser.add_option('--no-embd', dest='feature_embd', action='store_false', defaul
 parser.add_option('--gpu', dest='gpu_setting', choices=['1', '2', '3'], default='2', help='1 for CPU, 2 for GPU, 3 for CuDNN')
 parser.add_option('--log-game', dest='log_game', action='store_true', default=False)
 parser.add_option('--dst', dest='dst_view', choices=['3', '5'], default='5')
-parser.add_option("--ner", dest='ner', choices=[True, False], default=True)
+parser.add_option("--ner", dest='ner', choices=[True, False], default=False)
 
 (options, args) = parser.parse_args()
 
