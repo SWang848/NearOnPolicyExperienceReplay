@@ -46,13 +46,15 @@ parser.add_option('-r', '--replay', dest='replay', default='DER', choices=['STD'
 parser.add_option('-s', '--buffer-size', dest='buffer_size', default='100000', help='Replay buffer size', type=int)
 parser.add_option('-m', '--memnn-size', dest='memnn_size', default='10', help='Memory network memory size', type=int)
 parser.add_option('-d', '--dupe', dest='dupe', default='CN', choices=['CN', 'NONE'], help='Extra training')
-parser.add_option('-t', '--timesteps', dest='timesteps', default='4', help='Recurrent timesteps', type=int)
+parser.add_option('-t', '--timesteps', dest='timesteps', default='10', help='Recurrent timesteps', type=int)
+# parser.add_option('-t', '--timesteps', dest='timesteps', default='4', help='Recurrent timesteps', type=int)
 parser.add_option('-e', '--end_e', dest='end_e', default='0.05', help='Final epsilon value', type=float)
 parser.add_option('-l', '--lr-c', dest='lr_c', default='0.02', help='Critic learning rate', type=float)
 parser.add_option('-L', '--lr-a', dest='lr_a', default='0.001', help='Actor learning rate', type=float)
 parser.add_option('--buffer-a', dest='buffer_a', default='2.', help='Reply buffer error exponent', type=float)
 parser.add_option('--buffer-e', dest='buffer_e', default='0.01', help='Reply buffer error offset', type=float)
-parser.add_option('-u', '--update-period', dest='updates', default='2', help='Update interval', type=int)
+parser.add_option('-u', '--update-period', dest='updates', default='4', help='Update interval', type=int)
+# parser.add_option('-u', '--update-period', dest='updates', default='2', help='Update interval', type=int)
 parser.add_option('-f', '--frame-skip', dest='frame_skip', default='4', help='Frame skip', type=int)
 parser.add_option('-b', '--batch-size', dest='batch_size', default='64', help='Sample batch size', type=int)
 parser.add_option('-g', '--discount', dest='discount', default='0.99', help='Discount factor', type=float)
@@ -63,8 +65,8 @@ parser.add_option('--no-action', dest='action_conc', action='store_false', defau
 parser.add_option('--no-embd', dest='feature_embd', action='store_false', default=True)
 parser.add_option('--gpu', dest='gpu_setting', choices=['1', '2', '3'], default='2', help='1 for CPU, 2 for GPU, 3 for CuDNN')
 parser.add_option('--log-game', action='store_true', dest='log_game')
-parser.add_option("--ner", dest='ner', default=True)
-parser.add_option("--property", dest='property', default=True)
+parser.add_option("--ner", dest='ner', default=False)
+parser.add_option("--property", dest='property', default=False)
 
 
 (options, args) = parser.parse_args()
@@ -75,7 +77,7 @@ hyper_info = '{}-r{}{}-d{}-t{}-batsiz{}-lr{}-{}-eval{}'.format(
 
 # create evironment
 json_file = "mine_config.json"
-env = Minecart.from_json(json_file)
+env = Minecart.from_json(json_file, partial=True)
 pixel_env = PixelMinecart(env)
 
 all_weights = list(np.loadtxt("regular_weights_mc"))
@@ -103,7 +105,7 @@ agent = deep_agent(env,
                    dup=None if options.dupe == 'NONE' else options.dupe,
                    extra='{}_{}'.format(timestamp, hyper_info),
                    gpu_setting=options.gpu_setting,
-                   im_size=(6,),
+                   im_size=(5,),
                    action_conc=options.action_conc,
                    feature_embd=options.feature_embd,    
                    ner=options.ner,

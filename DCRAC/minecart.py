@@ -191,7 +191,8 @@ class Minecart(Env):
                  ore_cnt=2,
                  capacity=CAPACITY,
                  mine_distributions=None,
-                 ore_colors=None):
+                 ore_colors=None,
+                 partial=False):
 
         super(Minecart, self).__init__()
 
@@ -204,11 +205,17 @@ class Minecart(Env):
         self.mine_cnt = mine_cnt
         self.generate_mines(mine_distributions)
         self.cart = Cart(self.ore_cnt)
+        self.partial = partial
 
         self.end = False
+        
+        if self.partial:
+            low = np.append(np.array([0, 0, 0]), np.zeros(ore_cnt))
+            high = np.append(np.array([1, 1, 360]), np.ones(ore_cnt)*capacity)
+        else:
+            low = np.append(np.array([0, 0, 0, 0]), np.zeros(ore_cnt))
+            high = np.append(np.array([1, 1, MAX_SPEED, 360]), np.ones(ore_cnt)*capacity)
 
-        low = np.append(np.array([0, 0, 0, 0]), np.zeros(ore_cnt))
-        high = np.append(np.array([1, 1, MAX_SPEED, 360]), np.ones(ore_cnt)*capacity)
         self.observation_space = Box(low=low, high=high, dtype=np.float32)
         # self.action_space = Discrete(ACTION_COUNT)
         self.action_space = np.arange(ACTION_COUNT)
@@ -262,7 +269,7 @@ class Minecart(Env):
     #     return self.ore_cnt + 1
 
     @staticmethod
-    def from_json(filename):
+    def from_json(filename, partial):
         """
             Generate a Minecart instance from a json configuration file
             Args:
@@ -275,7 +282,8 @@ class Minecart(Env):
             ore_cnt=data["ore_cnt"],
             mine_cnt=data["mine_cnt"],
             capacity=data["capacity"],
-            ore_colors=ore_colors)
+            ore_colors=ore_colors,
+            partial=partial)
 
         if "mines" in data:
             for mine_data, mine in zip(data["mines"], minecart.mines):
