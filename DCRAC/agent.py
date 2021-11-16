@@ -52,12 +52,14 @@ class DCRACAgent:
                  extra=None,
                  gpu_setting='1',
                  ner=True,
-                 property=False):
+                 property=False,
+                 partial=False):
         
         self.env = env
         self.pixel_env = pixel_env
         
         self.observation_shape = self.env.observation_space.shape
+        print(self.observation_shape)
         self.nb_action = self.env.action_space.shape[0]
         self.nb_objective = self.env.obj_cnt
 
@@ -127,6 +129,8 @@ class DCRACAgent:
         self.ner = ner
         self.property = property
 
+        self.partial = partial
+
         self.extra = extra
         self.gpu_setting = gpu_setting
 
@@ -192,8 +196,11 @@ class DCRACAgent:
         episode_steps = 0
         pred_idx = None
 
-        self.current_state_raw = self.env.reset()
-        
+        if self.partial:
+            self.current_state_raw = np.delete(self.env.reset(), 2)
+        else:
+            self.current_state_raw = self.env.reset()
+
         if self.pixel_env is None:
             self.current_state, last_action = self.history.reset_with_raw_frame(self.current_state_raw, fill=self.fill_history)
         else:
@@ -209,6 +216,9 @@ class DCRACAgent:
 
             # perform the action
             next_state_raw, reward, terminal, info = self.env.step(action, self.frame_skip)
+
+            if self.partial:
+                next_state_raw = np.delete(next_state_raw, 2)
 
             if self.pixel_env is None:
                 next_state, next_last_action = self.history.add_raw_frame(next_state_raw, action)
@@ -246,7 +256,12 @@ class DCRACAgent:
             last_action = next_last_action
             
             if terminal or episode_steps > self.max_episode_length:
-                self.current_state_raw = self.env.reset()
+                
+                if self.partial:
+                    self.current_state_raw = np.delete(self.env.reset(), 2)
+                else:
+                    self.current_state_raw = self.env.reset()
+                    
                 if self.pixel_env is None:
                     self.current_state, last_action = self.history.reset_with_raw_frame(self.current_state_raw, fill=self.fill_history)
                 else:

@@ -67,6 +67,7 @@ parser.add_option('--gpu', dest='gpu_setting', choices=['1', '2', '3'], default=
 parser.add_option('--log-game', action='store_true', dest='log_game')
 parser.add_option("--ner", dest='ner', default=False)
 parser.add_option("--property", dest='property', default=False)
+parser.add_option("--partial", dest='partial', default=True)
 
 
 (options, args) = parser.parse_args()
@@ -77,7 +78,7 @@ hyper_info = '{}-r{}{}-d{}-t{}-batsiz{}-lr{}-{}-eval{}'.format(
 
 # create evironment
 json_file = "mine_config.json"
-env = Minecart.from_json(json_file, partial=True)
+env = Minecart.from_json(json_file, partial=options.partial)
 pixel_env = PixelMinecart(env)
 
 all_weights = list(np.loadtxt("regular_weights_mc"))
@@ -105,11 +106,12 @@ agent = deep_agent(env,
                    dup=None if options.dupe == 'NONE' else options.dupe,
                    extra='{}_{}'.format(timestamp, hyper_info),
                    gpu_setting=options.gpu_setting,
-                   im_size=(5,),
+                   im_size=(5,) if options.partial else (6,),
                    action_conc=options.action_conc,
                    feature_embd=options.feature_embd,    
                    ner=options.ner,
-                   property=options.property)
+                   property=options.property,
+                   partial=options.partial)
 
 steps_per_weight = 50000 if options.mode == 'sparse' else 1
 
