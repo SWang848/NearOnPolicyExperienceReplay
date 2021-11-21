@@ -67,7 +67,7 @@ parser.add_option('--gpu', dest='gpu_setting', choices=['1', '2', '3'], default=
 parser.add_option('--log-game', action='store_true', dest='log_game')
 parser.add_option("--ner", dest='ner', default=True)
 parser.add_option("--property", dest='property', default=True)
-parser.add_option("--partial", dest='partial', default=True)
+parser.add_option("--partial", dest='partial', default=False)
 
 
 (options, args) = parser.parse_args()
