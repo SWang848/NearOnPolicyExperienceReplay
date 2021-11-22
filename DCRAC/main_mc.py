@@ -65,7 +65,7 @@ parser.add_option('--no-action', dest='action_conc', action='store_false', defau
 parser.add_option('--no-embd', dest='feature_embd', action='store_false', default=True)
 parser.add_option('--gpu', dest='gpu_setting', choices=['1', '2', '3'], default='2', help='1 for CPU, 2 for GPU, 3 for CuDNN')
 parser.add_option('--log-game', action='store_true', dest='log_game')
-parser.add_option("--ner", dest='ner', default=True)
+parser.add_option("--ner", dest='ner', default=False)
 parser.add_option("--property", dest='property', default=True)
 parser.add_option("--partial", dest='partial', default=False)
 
